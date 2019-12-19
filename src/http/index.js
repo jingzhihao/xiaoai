@@ -15,7 +15,7 @@ const isProduction = process.env.NODE_ENV === 'production'
 const service = axios.create()
 
 // 接口基础路径
-service.defaults.baseURL = isProduction ? '线上接口地址' : 'http://localhost:3000'
+service.defaults.baseURL = isProduction ? '线上接口地址' : '/api'
     // 超时时间
 service.defaults.timeout = 10000
     // 请求头类型

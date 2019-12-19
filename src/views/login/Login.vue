@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-card class="box-card">
-      <el-card class="sign">欢迎来到小爱社区</el-card>
+      <el-card class="sign">请注册</el-card>
       <el-form :model="ruleForm"
         status-icon
         :rules="rules"
@@ -21,8 +21,7 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
-          <el-button @click="resetForm('ruleForm')">重置</el-button>
+          <el-button>注册</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -59,6 +58,7 @@ export default {
       }
     };
     return {
+      
       ruleForm: {
         pass: "",
         checkPass: "",
@@ -73,6 +73,11 @@ export default {
   },
   components: {},
   methods: {
+    //切换验证码
+    getData(){
+        this.$refs.captcha.src = "api/captcha?time=" + Date.now();
+    },
+    //判断登录是否成功
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -93,7 +98,8 @@ export default {
       this.$refs[formName].resetFields();
     }
   },
-  mounted() {},
+  mounted() {
+  },
   watch: {},
   computed: {}
 };
@@ -118,5 +124,8 @@ export default {
 }
 .denglu {
   margin: 30px 0 0 170px;
+}
+.img{
+  margin: 0 100px;
 }
 </style>
