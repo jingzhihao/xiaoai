@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Common from '../views/Common.vue'
+import Common from '../views/common/Common.vue'
 Vue.use(VueRouter)
 
 const routes = [{
@@ -17,14 +17,59 @@ const routes = [{
                     import ('../views/Home.vue')
             },
 
+            //已发布
+            {
+                path: '/published',
+                name: 'published',
+                component: () =>
+                    import ('../views/published/Published.vue')
+            },
+            //统计
+            {
+                path: '/statistics',
+                name: 'statistics',
+                component: () =>
+                    import ('../views/statistics/Statistics.vue')
+            },
+            //发表
+            {
+                path: '/publish',
+                name: 'publish',
+                component: () =>
+                    import ('../views/publish/Publish.vue')
+            },
+            //标签
+            {
+                path: '/label',
+                name: 'label',
+                component: () =>
+                    import ('../views/label/Label.vue')
+            },
+            //导出
+            {
+                path: '/educe',
+                name: 'educe',
+                component: () =>
+                    import ('../views/educe/Educe.vue')
+            },
+            //上传
+            {
+                path: '/uploadon',
+                name: 'uploadon',
+                component: () =>
+                    import ('../views/uploadon/Uploadon.vue')
+            },
+            //退出
+            {
+                path: '/drop',
+                name: 'drop',
+                component: () =>
+                    import ('../views/drop/Drop.vue')
+            },
+
         ]
     },
-    {
-        path: '/about',
-        name: 'about',
-        component: () =>
-            import ( /* webpackChunkName: "about" */ '../views/About.vue')
-    },
+
     {
         path: '/login',
         name: 'login',
