@@ -8,7 +8,7 @@
         </div>
         <div class="top_t">
           <span>早上好，亲爱的***用户</span>
-          <span>登录时间：**年*月*日</span>
+          <span>登录时间：{{date}}}</span>
         </div>
       </div>
 
@@ -56,7 +56,7 @@
  export default {
    data () {
      return {
-        
+        date: new Date(),
      }
    },
    components: {
@@ -68,8 +68,11 @@
         }
    },
    mounted() {
-
-   },
+          let _this = this; //声明一个变量指向vue实例this,保证作用域一致
+          this.timer = setInterval(function() {
+            _this.date = new Date();//修改数据date
+          }, 1000);
+        },
    watch: {
 
    },

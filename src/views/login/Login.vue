@@ -21,7 +21,7 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button>注册</el-button>
+          <el-button @click="submitForm('ruleForm')">注册</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -60,6 +60,7 @@ export default {
     return {
       
       ruleForm: {
+        age:"",
         pass: "",
         checkPass: "",
         
@@ -74,29 +75,54 @@ export default {
   components: {},
   methods: {
     //切换验证码
-    getData(){
-        this.$refs.captcha.src = "api/captcha?time=" + Date.now();
-    },
+    
     //判断登录是否成功
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.$message({
-            message: "成功登陆",
-            type: "success"
-          });
-          // this.$router.push({name:"home"})
-          localStorage.setItem('name',this.ruleForm.age)
-          this.$router.push('/')
-        } else {
-          console.log("error submit!!");
-          return false;
+          //发送post请求
+          this.$axios
+          .req("/user/register", {
+              username:this.ruleForm.age,
+              password:this.ruleForm.pass
+          })
+          .then(res => {
+            console.log('res=>', res);
+            if(res.message === '成功'){
+              console.log('成功');
+            }else{
+              console.log('404');
+            }
+          })
         }
       });
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
+    },
+
+    //
+    postData(){
+      let data = {
+        username:this.ruleForm.pass,
+        password:this.ruleForm.checkPass
+      }
+      console.log(this.$axios);
+      this.$axios.post('/user/register', data)
+      .then(function (res) {
+        if(res.data === "注册成功"){
+          //写跳转操作
+          console.log("scusse")
+        }
+      })
+      .catch(function (error) {
+        if(res.data === "注册失败"){
+          //弹窗提示注册失败
+        }
+      });
     }
+
+
   },
   mounted() {
   },

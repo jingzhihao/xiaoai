@@ -1,112 +1,136 @@
 <template>
- <div>
-        <div class="index_p">
-        <el-card class="visit">
-          <div class="visit_t">
-            <div>
-              <img src="../assets/img/people.svg" />
+    <div class="box">
+        <div class="box_1"><img src="../../assets/img/xuan.png" @click="ched"><span class="span_1">todo List</span></div>
+        <div class="box_x">
+            <div class="box_2" v-for="(item,index) in arr" :key="index">
+                <div class="span_1"><input type="checkbox" v-model="item.checked" @click="che(item)">{{item.name}}</div>
+                <div class="span_2"><img src="../../assets/img/cuo.png" @click="del(item)"></div>
             </div>
-            <div class="visit_P">
-              <span>New Visit</span>
-              <div>{{arr.visits}}</div>
-            </div>
-          </div>
-        </el-card>
-        <el-card class="visit">
-          <div class="visit_t">
-            <div>
-              <img src="../assets/img/news.svg" />
-            </div>
-            <div class="visit_P">
-              <span>Messages</span>
-              <div>{{arr.messages}}</div>
-            </div>
-          </div>
-        </el-card>
-        <el-card class="visit">
-          <div class="visit_t">
-            <div>
-              <img src="../assets/img/money.svg" />
-            </div>
-            <div class="visit_P">
-              <span>Purchases</span>
-              <div>{{arr.purchases}}</div>
-            </div>
-          </div>
-        </el-card>
-        <el-card class="visit">
-          <div class="visit_t">
-            <div>
-              <img src="../assets/img/car.svg" />
-            </div>
-            <div class="visit_P">
-              <span>Shopping</span>
-              <div>{{arr.shopping}}</div>
-            </div>
-          </div>
-        </el-card>
-      </div>
- </div>
+        </div>
+        <div class="box_3">
+            <div class="box_3_1">{{total}}items left</div>
+            <div class="box_3_2" @click="All">All</div>
+            <div class="box_3_3" @click="Active">Active</div>
+            <div class="box_3_4" @click="Completed">Completed</div>
+        </div>
+    </div>
 </template>
 
 <script>
- export default {
-   data () {
-     return {
-        arr: {},
-     }
-   },
-   components: {
+    export default {
+        name: "Home",
+        components: {
+        },
+        props: {},
+        data() {
+            return {
+                list: [],
+                arr :[],
+                num : 0,
+                checkbox : true,
 
-   },
-   methods: {
-//卡片图
-    getData() {
-      this.$axios
-        .req("/homeData")
-        .then(res => {
-          this.arr = res.data;
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-   },
-   mounted() {
-this.getData();
-   },
-   watch: {
+            }
+        },
+        methods: {
+            getData(){
+                this.$axios.req('/todoList').then(res => {
+                    this.arr = res.data;
+                    console.log(this.arr);
+                }).catch(err => {
+                    console.log('todoList没有获取到');
+                })
+            },
+            del(it){
+                this.list = this.list.filter((item)=>{
+                    return item !== it
+                })
+            },
+            All(){
+                this.num = 1;
+                this.list = this.arr.filter((item)=> {
+                    return item.checked !== ''
+                })
+            },
+            Active(){
+                this.num = 2;
+                this.list = this.arr.filter((item)=> {
+                    return item.checked === false
+                })
+            },
+            Completed(){
+                this.num = 3;
+                this.list = this.arr.filter((item)=> {
+                    return item.checked !== false
+                })
+            },
+            //全选
+            ched(){
+                if (this.num === 1){
+                    this.list.map((item) => {
+                        item.checked = this.checkbox;
+                    })
+                }
+            },
+            //单选
+            che(n){
+                n.checked=!n.checked
+                if(this.num === 2){
+                    this.list = this.arr.filter((item)=> {
+                        return item.checked === false
+                    })
+                    // this.Active()
+                }
+                if(this.num === 3){
+                    this.list = this.arr.filter((item)=> {
+                        return item.checked !== false
+                    })
+                }
+            }
+        },
+        mounted() {
+            this.getData();
+            this.list = this.arr;
+        },
+        created() {
 
-   },
-   computed: {
-
-   }
- }
+        },
+        filters: {},
+        computed: {
+            total(){
+                let nun = 0;
+                if (this.num === 1){
+                    this.list.map((item) => {
+                        if (item.checked !== true){
+                            nun ++
+                        }
+                    })
+                    return nun
+                }else if (this.num === 2){
+                    this.list.map((item) => {
+                        if (item.checked === false){
+                            nun ++
+                        }
+                    })
+                    return nun
+                }
+                else if (this.num === 3){
+                    this.list.map((item) => {
+                        if (item.checked === true){
+                            nun ++
+                        }
+                    })
+                    return nun
+                }
+            }
+        },
+        watch: {},
+        directives: {}
+    }
 </script>
 
-<style scoped lang='scss'>
-.index_p {
-  height: 144px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin: 0 6px;
-  .visit {
-    width: 280px;
-    height: 80px;
-    img {
-      width: 50px;
-      height: 40px;
+<style scoped lang="scss">
+    .box{
+        border: 1px solid black;  
     }
-    .visit_t {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      margin: 0px -42px 0px -44px;
-    }
-    span{
-      color: #a39dc0;
-    }
-  }
-}
+    
 </style>

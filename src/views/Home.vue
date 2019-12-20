@@ -9,7 +9,7 @@
             </div>
             <div class="visit_P">
               <span>New Visit</span>
-              <div>{{arr.visits}}</div>
+              <div><countTo :startVal='0' :endVal='arr.visits' :duration='3000'></countTo></div>
             </div>
           </div>
         </el-card>
@@ -20,7 +20,7 @@
             </div>
             <div class="visit_P">
               <span>Messages</span>
-              <div>{{arr.messages}}</div>
+              <div><countTo :startVal='0' :endVal='arr.messages' :duration='3000'></countTo></div>
             </div>
           </div>
         </el-card>
@@ -31,7 +31,7 @@
             </div>
             <div class="visit_P">
               <span>Purchases</span>
-              <div>{{arr.purchases}}</div>
+              <div><countTo :startVal='0' :endVal='arr.purchases' :duration='3000'></countTo></div>
             </div>
           </div>
         </el-card>
@@ -42,7 +42,7 @@
             </div>
             <div class="visit_P">
               <span>Shopping</span>
-              <div>{{arr.shopping}}</div>
+              <div><countTo :startVal='0' :endVal='arr.shopping' :duration='3000'></countTo></div>
             </div>
           </div>
         </el-card>
@@ -74,11 +74,34 @@
       </div>
 
       <!--订单 进度条 -->
+      <div class="indent">
+          <div>
+            <el-card class="indent_card">
+              
+              <order-Data></order-Data>
+            </el-card>
+          </div>
+          <div>
+            <el-card class="indent_rd">
+              <index></index>
+            </el-card>
+          </div>
+          <div>
+            <el-card class="indent_cd">
+              <div><img src="../assets/img/s1.png"></div>
+              <Progress></Progress>
+            </el-card>
+          </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import countTo from 'vue-count-to';
+import Index from '../components/index/Index.vue';
+import Progress from '../components/index/Progress.vue';
+import OrderData from '../components/index/OrderData.vue';
 export default {
   data() {
     return {
@@ -119,7 +142,12 @@ export default {
       
      };
   },
-  components: {},
+  components: {
+    countTo,
+    Index,
+    Progress,
+    OrderData
+  },
   methods: {
     //请求主页数据
     //卡片图
@@ -226,6 +254,31 @@ export default {
   .card{
     width: 380px;
     height: 366px;
+  }
+}
+
+//订单
+.indent{
+  height: 500px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  .indent_card{
+    width: 500px;
+    height: 420px;
+  }
+  .indent_rd{
+    width: 340px;
+    height: 420px;
+  }
+  .indent_cd{
+    width: 300px;
+    height: 420px;
+    img{
+      width: 280px;
+      height: 200px;
+      margin: 0 0 0 -10px;
+    }
   }
 }
 
