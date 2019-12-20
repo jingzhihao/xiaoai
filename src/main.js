@@ -6,9 +6,12 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import dayjs from 'dayjs'
 import service from "./http"
+import VCharts from 'v-charts'
+
 
 
 Vue.use(ElementUI)
+Vue.use(VCharts)
 Vue.prototype.$axios = service
 Vue.prototype.$dayjs = dayjs
 Vue.config.productionTip = false
