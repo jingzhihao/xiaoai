@@ -15,14 +15,13 @@
 
       
       <div style="display:flex">
-
         <!-- 侧边栏 -->
             <div class="navigation">
             <div class="navigation_t">
-              <span><i class="el-icon-map-location"></i>&nbsp;首页</span>
+              <span ><i class="el-icon-map-location"></i>&nbsp;首页</span>
             </div>
             <div class="navigation_t">
-              <span><i class="el-icon-s-grid"></i>&nbsp;已发布</span>
+              <span @click="go()"><i class="el-icon-s-grid"></i>&nbsp;已发布</span>
             </div>
             <div class="navigation_t">
               <span><i class="el-icon-menu"></i>&nbsp;统计</span>

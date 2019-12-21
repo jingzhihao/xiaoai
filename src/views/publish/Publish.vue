@@ -1,6 +1,6 @@
 <template>
  <div>
-
+    <div class="">发布文章</div>
  </div>
 </template>
 

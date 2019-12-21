@@ -74,14 +74,14 @@ const routes = [{
         path: '/login',
         name: 'login',
         component: () =>
-            import ( /* webpackChunkName: "about" */ '../views/login/Login.vue')
+            import ('../views/login/Login.vue')
     },
     //登录
     {
         path: '/register',
         name: 'register',
         component: () =>
-            import ( /* webpackChunkName: "about" */ '../views/register/Register.vue')
+            import ('../views/login/Register.vue')
     },
     {
         path: '*',
