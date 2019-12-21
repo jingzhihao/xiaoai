@@ -3,7 +3,9 @@
      <!--进度条-->
      <div v-for="(item,index) in arr" :key="index">
          {{item.name}}
-        <el-progress :percentage="item.progress*100"></el-progress>
+        
+        <el-progress :percentage="item.progress*100" status="success" v-if="item.progress*100 === 100"></el-progress>
+        <el-progress :percentage="item.progress*100" v-else-if="item.progress*100 !== 100"></el-progress>
         </div>
  </div>
 </template>
