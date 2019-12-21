@@ -1,13 +1,15 @@
 <template>
-  <div>
+  <div id="de">
     <el-card class="box-card">
-      <el-card class="sign">欢迎来到小爱社区</el-card>
-      <el-form :model="ruleForm"
+      <el-card class="sign">请注册</el-card>
+      <el-form
+        :model="ruleForm"
         status-icon
         :rules="rules"
         ref="ruleForm"
         label-width="100px"
-        class="demo-ruleForm">
+        class="demo-ruleForm"
+      >
         <el-form-item label="用户名" prop="age">
           <el-input v-model="ruleForm.age"></el-input>
         </el-form-item>
@@ -16,16 +18,12 @@
           <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
         </el-form-item>
 
-        <el-form-item label="请输入验证码" prop="checkPass">
-          <el-input type="captcha" v-model="ruleForm.captcha" autocomplete="oft"></el-input>
+        <el-form-item label="确认密码" prop="checkPass">
+          <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
         </el-form-item>
-          <div class="img">
-            <img src="api/captcha" @click="getData()"  ref="captcha">
-          </div>
+
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
-          <el-button @click="resetForm('ruleForm')">重置</el-button>
-          <el-button>注册</el-button>
+          <el-button @click="submitForm('ruleForm')">注册</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -38,6 +36,8 @@ export default {
     var checkAge = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("用户名不能为空"));
+      } else if (value === /[\u4E00-\u9FA5]/g) {
+        return callback(new Error("用户名不能为中文"));
       } else {
         callback();
       }
@@ -52,60 +52,107 @@ export default {
         callback();
       }
     };
-    
+    var validatePass2 = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请再次输入密码"));
+      } else if (value !== this.ruleForm.pass) {
+        callback(new Error("两次输入密码不一致!"));
+      } else {
+        callback();
+      }
+    };
     return {
-      
       ruleForm: {
+        age: "",
         pass: "",
-       
-        
+        checkPass: ""
       },
       rules: {
         pass: [{ validator: validatePass, trigger: "blur" }],
-        
-        
+        checkPass: [{ validator: validatePass2, trigger: "blur" }],
+        age: [{ validator: checkAge, trigger: "blur" }]
       }
     };
   },
   components: {},
   methods: {
     //切换验证码
-    getData(){
-        this.$refs.captcha.src = "api/captcha?time=" + Date.now();
-    },
-    //判断登录是否成功
+
+    //判断注册是否成功
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.$message({
-            message: "成功登陆",
-            type: "success"
-          });
-          // this.$router.push({name:"home"})
-          localStorage.setItem('name',this.ruleForm.age)
-          this.$router.push('/')
-        } else {
-          console.log("error submit!!");
-          return false;
+          //发送post请求
+          this.$axios
+            .req("/user/register", {
+              username: this.ruleForm.age,
+              password: this.ruleForm.pass
+            })
+            .then(res => {
+              console.log("res=>", res);
+              if (res.message === "注册成功") {
+                this.$massage({ type: "scusse", massage: res.massage });
+                this.$router.push("/login");
+                console.log("scusse");
+              } else {
+                console.log("注册失败");
+              }
+            });
         }
       });
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
+    },
+
+    //
+    postData() {
+      let data = {
+        username: this.ruleForm.pass,
+        password: this.ruleForm.checkPass
+      };
+      console.log(this.$axios);
+      this.$axios
+        .post("/user/register", data)
+        .then(function(res) {
+          if (res.message === "注册成功") {
+            //写跳转操作
+            this.$message({ type: "scusse", massage: res.message });
+            console.log("scusse");
+            this.$router.push("/login");
+            
+          } else {
+            console.log("注册失败");
+            this.$message({ type: "scusse", massage: res.message });
+            
+          }
+        })
+        .catch(function(error) {});
     }
   },
-  mounted() {
-  },
+  mounted() {},
   watch: {},
   computed: {}
 };
 </script>
 
 <style scoped lang='scss'>
+#de {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  margin: 0 auto;
+  background: url("../../assets/img/zhuche.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -o-background-size: cover;
+  background-position: center 0;
+}
 .box-card {
   width: 500px;
-  height: 500px;
-  margin: 0 auto;
+  height: 380px;
+  margin: 100px auto;
 }
 .sign {
   width: 460px;
@@ -121,7 +168,7 @@ export default {
 .denglu {
   margin: 30px 0 0 170px;
 }
-.img{
+.img {
   margin: 0 100px;
 }
 </style>

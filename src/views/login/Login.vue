@@ -1,13 +1,15 @@
 <template>
   <div>
     <el-card class="box-card">
-      <el-card class="sign">请注册</el-card>
-      <el-form :model="ruleForm"
+      <el-card class="sign">欢迎来到小爱社区</el-card>
+      <el-form
+        :model="ruleForm"
         status-icon
         :rules="rules"
         ref="ruleForm"
         label-width="100px"
-        class="demo-ruleForm">
+        class="demo-ruleForm"
+      >
         <el-form-item label="用户名" prop="age">
           <el-input v-model="ruleForm.age"></el-input>
         </el-form-item>
@@ -16,12 +18,16 @@
           <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
         </el-form-item>
 
-        <el-form-item label="确认密码" prop="checkPass">
-          <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+        <el-form-item label="请输入验证码" prop="checkPass">
+          <el-input type="captcha" v-model="ruleForm.captcha" autocomplete="oft"></el-input>
         </el-form-item>
-
+        <div class="img">
+          <img src="api/captcha" @click="getData()" ref="captcha"/>
+        </div>
         <el-form-item>
-          <el-button @click="submitForm('ruleForm')">注册</el-button>
+          <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
+          <el-button @click="resetForm('ruleForm')">重置</el-button>
+          <el-button>注册</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -42,90 +48,57 @@ export default {
       if (value === "") {
         callback(new Error("请输入密码"));
       } else {
-        if (this.ruleForm.checkPass !== "") {
-          this.$refs.ruleForm.validateField("checkPass");
-        }
         callback();
       }
     };
-    var validatePass2 = (rule, value, callback) => {
+    var verification = (rule, value, callback) => {
       if (value === "") {
-        callback(new Error("请再次输入密码"));
-      } else if (value !== this.ruleForm.pass) {
-        callback(new Error("两次输入密码不一致!"));
+        callback(new Error("请输入验证码"));
       } else {
         callback();
       }
     };
     return {
-      
       ruleForm: {
-        age:"",
+        age: "",
         pass: "",
-        checkPass: "",
-        
+        checkPass: ""
       },
       rules: {
         pass: [{ validator: validatePass, trigger: "blur" }],
-        checkPass: [{ validator: validatePass2, trigger: "blur" }],
-        
+        checkPass: [{ validator: verification, trigger: "blur" }],
+        age: [{ validator: checkAge, trigger: "blur" }]
       }
     };
   },
   components: {},
   methods: {
     //切换验证码
-    
+    getData() {
+      this.$refs.captcha.src = "api/captcha?time=" + Date.now();
+    },
     //判断登录是否成功
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          //发送post请求
-          this.$axios
-          .req("/user/register", {
-              username:this.ruleForm.age,
-              password:this.ruleForm.pass
-          })
-          .then(res => {
-            console.log('res=>', res);
-            if(res.message === '成功'){
-              console.log('成功');
-            }else{
-              console.log('404');
-            }
-          })
+          this.$message({
+            message: "成功登陆",
+            type: "success"
+          });
+          // this.$router.push({name:"home"})
+          localStorage.setItem("name", this.ruleForm.age);
+          this.$router.push("/");
+        } else {
+          console.log("error submit!!");
+          return false;
         }
       });
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
-    },
-
-    //
-    postData(){
-      let data = {
-        username:this.ruleForm.pass,
-        password:this.ruleForm.checkPass
-      }
-      console.log(this.$axios);
-      this.$axios.post('/user/register', data)
-      .then(function (res) {
-        if(res.data === "注册成功"){
-          //写跳转操作
-          console.log("scusse")
-        }
-      })
-      .catch(function (error) {
-        if(res.data === "注册失败"){
-          //弹窗提示注册失败
-        }
-      });
     }
-
-
   },
-  mounted() {
-  },
+  mounted() {},
   watch: {},
   computed: {}
 };
@@ -151,7 +124,7 @@ export default {
 .denglu {
   margin: 30px 0 0 170px;
 }
-.img{
+.img {
   margin: 0 100px;
 }
 </style>
