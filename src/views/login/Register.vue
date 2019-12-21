@@ -91,7 +91,10 @@ export default {
             .then(res => {
               console.log("res=>", res);
               if (res.message === "注册成功") {
-                this.$massage({ type: "scusse", massage: res.massage });
+                this.$message({
+                  message: "恭喜你，这是一条成功消息",
+                  type: "success"
+                });
                 this.$router.push("/login");
                 console.log("scusse");
               } else {
@@ -120,11 +123,9 @@ export default {
             this.$message({ type: "scusse", massage: res.message });
             console.log("scusse");
             this.$router.push("/login");
-            
           } else {
             console.log("注册失败");
             this.$message({ type: "scusse", massage: res.message });
-            
           }
         })
         .catch(function(error) {});

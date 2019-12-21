@@ -27,7 +27,7 @@
         <el-form-item>
           <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
           <el-button @click="resetForm('ruleForm')">重置</el-button>
-          <el-button>注册</el-button>
+          <el-button @click="register">注册</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -85,17 +85,22 @@ export default {
             message: "成功登陆",
             type: "success"
           });
-          // this.$router.push({name:"home"})
+          // 保存登录人的信息
           localStorage.setItem("name", this.ruleForm.age);
-          this.$router.push("/");
+          this.$router.push("/common");
         } else {
           console.log("error submit!!");
           return false;
         }
       });
     },
+    //清空输入框
     resetForm(formName) {
       this.$refs[formName].resetFields();
+    },
+    //跳转注册页面
+    register(){
+      this.$router.push('/register')
     }
   },
   mounted() {},
