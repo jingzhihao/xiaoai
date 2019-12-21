@@ -7,11 +7,12 @@ import 'element-ui/lib/theme-chalk/index.css'
 import dayjs from 'dayjs'
 import service from "./http"
 import VCharts from 'v-charts'
-
+import JsonExcel from 'vue-json-excel'
 
 
 Vue.use(ElementUI)
 Vue.use(VCharts)
+Vue.component('downloadExcel', JsonExcel)
 Vue.prototype.$axios = service
 Vue.prototype.$dayjs = dayjs
 Vue.config.productionTip = false
