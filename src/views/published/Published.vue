@@ -6,38 +6,37 @@
         <el-table-column prop="title" label="标题" width="350" align="center"></el-table-column>
         <el-table-column prop="author" label="作者" width="80" align="center"></el-table-column>
         <el-table-column prop="category" label="类目" width="100" align="center">
-        <template slot-scope="scope">
-          <el-tag  v-if="scope.row.category === 'Vue'" type="success">Vue</el-tag>
-          <el-tag  v-else-if="scope.row.category === 'React'">React</el-tag>
-          <el-tag  v-else-if="scope.row.category === 'JavaScript'" type="warning">JavaScript</el-tag>
-          <el-tag  v-else-if="scope.row.category === 'Node.js'" type="danger">Node.js</el-tag>
-          <el-tag  v-else-if="scope.row.category === '其他'" type="danger">其他</el-tag>
-          <el-tag  v-else-if="scope.row.category === '小程序'" type="danger">小程序</el-tag>
-          <el-tag  v-else-if="scope.row.category === '工具包'" type="danger">工具类</el-tag>
-          <el-tag  v-else-if="scope.row.category === '性能优化'" type="danger">性能优化</el-tag>
-        </template>
-          
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.category === 'Vue'" type="success">Vue</el-tag>
+            <el-tag v-else-if="scope.row.category === 'React'">React</el-tag>
+            <el-tag v-else-if="scope.row.category === 'JavaScript'" type="warning">JavaScript</el-tag>
+            <el-tag v-else-if="scope.row.category === 'Node.js'" type="danger">Node.js</el-tag>
+            <el-tag v-else-if="scope.row.category === '其他'" type="danger">其他</el-tag>
+            <el-tag v-else-if="scope.row.category === '小程序'" type="danger">小程序</el-tag>
+            <el-tag v-else-if="scope.row.category === '工具包'" type="danger">工具类</el-tag>
+            <el-tag v-else-if="scope.row.category === '性能优化'" type="danger">性能优化</el-tag>
+          </template>
         </el-table-column>
         <el-table-column prop="source" label="来源" width="100" align="center"></el-table-column>
         <el-table-column prop="star" label="重要性" width="150" align="center">
           <template slot-scope="scope">
-          <el-rate v-model="scope.row.star"></el-rate>
+            <el-rate v-model="scope.row.star"></el-rate>
           </template>
         </el-table-column>
         <el-table-column prop="date" label="发表时间" width="150" align="center"></el-table-column>
         <el-table-column label="操作" align="center" width="300">
-        <template slot-scope="scope">
-            <el-button
+          <template slot-scope="scope">
+            <el-button 
             icon="el-icon-edit" 
             size="mini" 
-            type="primary"
-             @click="modification()"
-             >修改</el-button>
+            type="primary" 
+            @click="modification(scope.row._id)"
+            >修改</el-button>
             <el-button
               icon="el-icon-delete"
               size="mini"
               type="danger"
-              @click="dele(scope.$index)"
+              @click="dele(scope.row._id)"
             >删除</el-button>
             <el-button
               icon="el-icon-delete"
@@ -70,48 +69,46 @@ export default {
     return {
       arr: [],
       pageSum: 10,
-      currentPage: 1, 
+      currentPage: 1
     };
   },
   components: {},
   methods: {
     //修改
-    modification() {
-      this.$prompt("原价", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消"
-      })
-        .then(({ value }) => {
-          this.$message({
-            type: "success"
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "取消输入"
-          });
-        });
+    modification(val) {
+      this.$router.push({ name: "compile", query: { id: val } });
     },
     //删除
     dele(val) {
+      console.log(val);
       this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(() => {
-          this.arr.splice(val + (this.currentPage - 1) * this.pagesize, 1);
-
-          this.$message({ type: "success", message: "删除成功!" });
+          this.$axios
+            .req("/article/delete", {
+              _id: val
+            })
+            .then(res => {
+              if (res.code === 200) {
+                this.$message({ type: "success", message: "删除成功!" });
+              } else {
+                alert("请求失败");
+              }
+            })
+            .catch(err => {
+              console.log(err);
+            });
         })
         .catch(() => {
           this.$message({ type: "info", message: "已取消删除" });
         });
     },
     //查看
-    check(val){
-      this.$router.push({name:"check",query : {id : val}})
+    check(val) {
+      this.$router.push({ name: "check", query: { id: val } });
     },
     getData() {
       this.$axios
@@ -119,9 +116,14 @@ export default {
         .then(res => {
           this.arr = res.data;
           this.arr.map(item => {
-              item.star = Number(item.star)
-          })
-         
+            item.star = Number(item.star);
+          });
+          this.arr.map(item => {
+            item.date = this.$dayjs(item.date).format(
+              "YYYY年MM月DD日 HH时mm分ss秒"
+            );
+          });
+
           //console.log(this.arr);
         })
         .catch(err => {
@@ -139,9 +141,7 @@ export default {
   mounted() {
     this.getData();
   },
-  watch: {
-    
-  },
+  watch: {},
   computed: {}
 };
 </script>

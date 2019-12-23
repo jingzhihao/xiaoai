@@ -53,14 +53,15 @@
               <el-option label="5" value="5"></el-option>
             </el-select>
           </el-form-item>
-              <el-form-item label="发布时间" prop="date">
-                <el-date-picker
-                  v-model="ruleForm.date"
-                  type="date"
-                  placeholder="选择日期时间"
-                  default-time="12:00:00"
-                ></el-date-picker>
-              </el-form-item>
+          <el-form-item label="发布时间" prop="date">
+            <el-date-picker
+              v-model="ruleForm.date"
+              type="datetime"
+              placeholder="选择日期时间"
+              align="right"
+              :picker-options="pickerOptions"
+            ></el-date-picker>
+          </el-form-item>
         </div>
         <div class="mavonEditor">
           <mavon-editor class="mavons" v-model="ruleForm.text" placeholder="请开始你的表演..." />
@@ -113,7 +114,30 @@ export default {
             trigger: "change"
           }
         ]
-      }
+      },
+      pickerOptions: {
+          shortcuts: [{
+            text: '今天',
+            onClick(picker) {
+              picker.$emit('pick', new Date());
+            }
+          }, {
+            text: '昨天',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24);
+              picker.$emit('pick', date);
+            }
+          }, {
+            text: '一周前',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', date);
+            }
+          }]
+        }
+
     };
   },
   components: {},

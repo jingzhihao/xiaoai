@@ -113,6 +113,7 @@ export default {
 
       let hour = this.$dayjs().hour();
       this.time = this.$dayjs().format('YYYY年MM月DD日 HH时mm分ss秒')
+      
       if(hour>6 && hour <=12){
         return this.Ntime = '早上好'
       }else if(hour>12 && hour <=14){

@@ -1,11 +1,14 @@
 <template>
   <div class="fot">
     <div>
-      <el-button size="mini" type="primary">返回</el-button>
+      <el-button size="mini" type="primary" @click="back()">返回</el-button>
     </div>
     <div>
       <div class="title">
         <h1>{{arr.title}}</h1>
+        <br />
+        <br />
+        <span class="span">摘要：{{arr.abstract}}</span>
       </div>
     </div>
   </div>
@@ -21,10 +24,13 @@ export default {
   },
   components: {},
   methods: {
+    back() {
+      this.$router.push("/published");
+    },
     getData() {
       this.$axios
         .req("/article/article", {
-          _id: this.id
+          _id: this.$route.query.id
         })
         .then(res => {
           if (res.code === 200) {
@@ -40,23 +46,20 @@ export default {
     }
   },
   mounted() {
-    this.id = this.$route.query.id;
-    //console.log(this.id);'
     this.getData();
   },
   watch: {},
   computed: {}
 };
 </script>
-
 <style scoped lang='scss'>
 .fot {
   width: 98%;
   margin: 10px auto;
 }
-.title{
-    margin: 0 auto;
-    width: 200px;
-    text-align: center;
+.title {
+  margin: 0 auto;
+  width: 200px;
+  text-align: center;
 }
 </style>
