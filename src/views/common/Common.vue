@@ -97,29 +97,29 @@ export default {
     },
     //导出excel
     educe() {
-      this.$router.push("/published");
+      this.$router.push("/educe");
     },
 
     //图片上传
     uploadon() {
-      this.$router.push("uploadon");
+      this.$router.push("/uploadon");
     },
     //退出系统
     drop() {
-      this.$router.push("drop");
+      this.$router.push("/drop");
     },
     //获取时间
     times() {
 
-      let hour = this.$dayjs().day();
+      let hour = this.$dayjs().hour();
       this.time = this.$dayjs().format('YYYY年MM月DD日 HH时mm分ss秒')
-      if(hour>6 || hour <12){
+      if(hour>6 && hour <=12){
         return this.Ntime = '早上好'
-      }else if(hour>12 || hour <14){
+      }else if(hour>12 && hour <=14){
         return this.Ntime = '中午好'
-      }else if(hour>14 || hour <18){
+      }else if(hour>14 && hour <=18){
         return this.Ntime = '下午好'
-      }else if(hour>18 || hour <24){
+      }else if(hour>18 && hour <=24){
         return this.Ntime = '晚上好'
       }else{
         return this.Ntime = '太晚了该睡觉了'
@@ -131,9 +131,9 @@ export default {
 
     this.times()
     //宝登录人的信息赋值到页面
-    if (localStorage.name) {
-      this.name = localStorage.getItem("name");
-    }
+    // if (localStorage.name) {
+    //   this.name = localStorage.getItem("name");
+    // }
   },
   watch: {},
   computed: {}

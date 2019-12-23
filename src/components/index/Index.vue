@@ -35,7 +35,7 @@
             getData(){
                 this.$axios.req('/todoList').then(res => {
                     this.arr = res.data;
-                    console.log(this.arr);
+                    //console.log(this.arr);
                 }).catch(err => {
                     console.log('todoList没有获取到');
                 })

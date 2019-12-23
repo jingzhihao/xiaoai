@@ -14,8 +14,8 @@
         label-width="100px"
         class="demo-ruleForm"
       >
-        <el-form-item label="文章标题" prop="name">
-          <el-input v-model="ruleForm.name"></el-input>
+        <el-form-item label="文章标题" prop="title">
+          <el-input v-model="ruleForm.title"></el-input>
         </el-form-item>
         <el-form-item label="文章摘要" prop="abstract">
           <el-input v-model="ruleForm.abstract"></el-input>
@@ -53,27 +53,17 @@
               <el-option label="5" value="5"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="活动时间" required>
-            <el-col :span="11">
-              <el-form-item prop="date1">
+              <el-form-item label="发布时间" prop="date">
                 <el-date-picker
+                  v-model="ruleForm.date"
                   type="date"
-                  placeholder="选择日期"
-                  v-model="ruleForm.date1"
-                  style="width: 100%;"
+                  placeholder="选择日期时间"
+                  default-time="12:00:00"
                 ></el-date-picker>
               </el-form-item>
-            </el-col>
-            <el-col class="line" :span="2">-</el-col>
-            <el-col :span="11">
-              <el-form-item prop="date2">
-                <el-time-picker placeholder="选择时间" v-model="ruleForm.date2" style="width: 100%;"></el-time-picker>
-              </el-form-item>
-            </el-col>
-          </el-form-item>
         </div>
         <div class="mavonEditor">
-          <mavon-editor class="mavons" v-model="value" placeholder="请开始你的表演..." />  
+          <mavon-editor class="mavons" v-model="ruleForm.text" placeholder="请开始你的表演..." />
         </div>
         <div class="issue">
           <el-button type="primary" @click="submitForm('ruleForm')">发布</el-button>
@@ -95,7 +85,7 @@ export default {
         source: "",
         star: "",
         text: "",
-        dateresource: "",
+        date: ""
       },
       rules: {
         title: [
@@ -108,39 +98,21 @@ export default {
         ],
         author: [
           { required: true, message: "请输入作者", trigger: "blur" },
-          { min: 0, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
+          { min: 0, max: 5, message: "长度在 0 到 5 个字符", trigger: "blur" }
         ],
         category: [
-          { required: true, message: "请选择活动区域", trigger: "change" }
+          { required: true, message: "请选择类目", trigger: "change" }
         ],
-        date1: [
+        source: [{ required: true, message: "请选择来源", trigger: "change" }],
+        star: [{ required: true, message: "请选择重要性", trigger: "change" }],
+        date: [
           {
             type: "date",
             required: true,
             message: "请选择日期",
             trigger: "change"
           }
-        ],
-        date2: [
-          {
-            type: "date",
-            required: true,
-            message: "请选择时间",
-            trigger: "change"
-          }
-        ],
-        type: [
-          {
-            type: "array",
-            required: true,
-            message: "请至少选择一个活动性质",
-            trigger: "change"
-          }
-        ],
-        resource: [
-          { required: true, message: "请选择活动资源", trigger: "change" }
-        ],
-        desc: [{ required: true, message: "请填写活动形式", trigger: "blur" }]
+        ]
       }
     };
   },
@@ -149,7 +121,27 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          alert("submit!");
+          console.log(this.ruleForm);
+          this.$axios
+            .req("/article/create", {
+              title: this.ruleForm.title,
+              abstract: this.ruleForm.abstract,
+              author: this.ruleForm.author,
+              category: this.ruleForm.category,
+              source: this.ruleForm.source,
+              star: this.ruleForm.star,
+              text: this.ruleForm.text,
+              date: this.ruleForm.date
+            })
+            .then(res => {
+              console.log("res=>", res);
+              if (res.code === 200) {
+                console.log("scusse");
+                alert("创建成功");
+              } else {
+                console.log("失败");
+              }
+            });
         } else {
           console.log("error submit!!");
           return false;
@@ -192,6 +184,5 @@ export default {
     //border: 1px solid red;
     margin: 25px auto;
   }
-  
 }
 </style>

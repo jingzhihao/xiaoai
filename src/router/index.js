@@ -66,6 +66,20 @@ const routes = [{
                 component: () =>
                     import ('../views/drop/Drop.vue')
             },
+            //编辑
+            {
+                path: '/compile',
+                name: 'compile',
+                component: () =>
+                    import ('../views/compile/Compile.vue')
+            },
+            //查看
+            {
+                path: '/check',
+                name: 'check',
+                component: () =>
+                    import ('../views/check/Check.vue')
+            },
 
         ]
     },

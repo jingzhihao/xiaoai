@@ -1,17 +1,51 @@
 <template>
   <div class="fout">
-    <div class="input_t">
-      <el-input placeholder="请输入商品名称" v-model="input" clearable></el-input>
-    </div>
     <div class="el-table">
       <el-table :data="arr.slice((currentPage-1)*pageSum,pageSum*currentPage)" style="width: 100%">
-        <el-table-column prop="NAME" label="名称" width="400" align="center"></el-table-column>
-        <el-table-column prop="GOODS_SERIAL_NUMBER" label="商品编号" width="280" align="center"></el-table-column>
-        <el-table-column prop="ORI_PRICE" label="原价" width="150" align="center"></el-table-column>
-        <el-table-column prop="PRESENT_PRICE" label="现价" width="150" align="center"></el-table-column>
-        <el-table-column label="操作" align="center">
-          <el-button icon="el-icon-edit" size="mini" type="primary" @click="modification()">修改</el-button>
-          <el-button icon="el-icon-delete" size="mini" type="danger" @click="dele(arr.ID)">删除</el-button>
+        <el-table-column prop="number" type="index" label="#" align="center"></el-table-column>
+        <el-table-column prop="title" label="标题" width="350" align="center"></el-table-column>
+        <el-table-column prop="author" label="作者" width="80" align="center"></el-table-column>
+        <el-table-column prop="category" label="类目" width="100" align="center">
+        <template slot-scope="scope">
+          <el-tag  v-if="scope.row.category === 'Vue'" type="success">Vue</el-tag>
+          <el-tag  v-else-if="scope.row.category === 'React'">React</el-tag>
+          <el-tag  v-else-if="scope.row.category === 'JavaScript'" type="warning">JavaScript</el-tag>
+          <el-tag  v-else-if="scope.row.category === 'Node.js'" type="danger">Node.js</el-tag>
+          <el-tag  v-else-if="scope.row.category === '其他'" type="danger">其他</el-tag>
+          <el-tag  v-else-if="scope.row.category === '小程序'" type="danger">小程序</el-tag>
+          <el-tag  v-else-if="scope.row.category === '工具包'" type="danger">工具类</el-tag>
+          <el-tag  v-else-if="scope.row.category === '性能优化'" type="danger">性能优化</el-tag>
+        </template>
+          
+        </el-table-column>
+        <el-table-column prop="source" label="来源" width="100" align="center"></el-table-column>
+        <el-table-column prop="star" label="重要性" width="150" align="center">
+          <template slot-scope="scope">
+          <el-rate v-model="scope.row.star"></el-rate>
+          </template>
+        </el-table-column>
+        <el-table-column prop="date" label="发表时间" width="150" align="center"></el-table-column>
+        <el-table-column label="操作" align="center" width="300">
+        <template slot-scope="scope">
+            <el-button
+            icon="el-icon-edit" 
+            size="mini" 
+            type="primary"
+             @click="modification()"
+             >修改</el-button>
+            <el-button
+              icon="el-icon-delete"
+              size="mini"
+              type="danger"
+              @click="dele(scope.$index)"
+            >删除</el-button>
+            <el-button
+              icon="el-icon-delete"
+              size="mini"
+              type="success"
+              @click="check(scope.row._id)"
+            >查看</el-button>
+          </template>
         </el-table-column>
       </el-table>
     </div>
@@ -27,18 +61,6 @@
         :total="this.arr.length"
       ></el-pagination>
     </div>
-    <br />
-    <div>
-      <download-excel
-          class = "export-excel-wrapper"
-          :data = "arr"
-          :fields = "json_fields"
-          name = "filename.xls">
-          <!-- 上面可以自定义自己的样式，还可以引用其他组件button -->
-           <el-button type="primary" size="small">导出EXCEL</el-button> 
-      </download-excel>
-      <!-- <el-button size="mini" type="danger">导出csv</el-button> -->
-    </div>
   </div>
 </template>
 
@@ -46,40 +68,29 @@
 export default {
   data() {
     return {
-      input: "",
-      list: [],
       arr: [],
       pageSum: 10,
-      currentPage: 1,
-
-      json_fields: {
-        "商品名称": "NAME",    //常规字段
-        "商品编号": "GOODS_SERIAL_NUMBER", //支持嵌套属性
-        "原价": "ORI_PRICE",
-        "现价": "PRESENT_PRICE",
-      },
-      
-      
+      currentPage: 1, 
     };
   },
   components: {},
   methods: {
     //修改
     modification() {
-       this.$prompt('原价', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          
-
-        }).then(({ value }) => {
+      this.$prompt("原价", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消"
+      })
+        .then(({ value }) => {
           this.$message({
-            type: 'success',
+            type: "success"
           });
-        }).catch(() => {
+        })
+        .catch(() => {
           this.$message({
-            type: 'info',
-            message: '取消输入'
-          });       
+            type: "info",
+            message: "取消输入"
+          });
         });
     },
     //删除
@@ -88,28 +99,33 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      }).then(() => {
-          this.arr = this.arr.filter(item => {
-            return item.ID !== val;
-          });
-          this.list = this.list.filter(item => {
-            return item.ID !== val;
-          });
-          this.$message({type: "success", message: "删除成功!"});
-        }).catch(() => {
-          this.$message({type: "info",message: "已取消删除"});
+      })
+        .then(() => {
+          this.arr.splice(val + (this.currentPage - 1) * this.pagesize, 1);
+
+          this.$message({ type: "success", message: "删除成功!" });
+        })
+        .catch(() => {
+          this.$message({ type: "info", message: "已取消删除" });
         });
+    },
+    //查看
+    check(val){
+      this.$router.push({name:"check",query : {id : val}})
     },
     getData() {
       this.$axios
-        .req("/tableData")
+        .req("/article/allArticle")
         .then(res => {
           this.arr = res.data;
-          this.list = res.data;
-          console.log(this.arr);
+          this.arr.map(item => {
+              item.star = Number(item.star)
+          })
+         
+          //console.log(this.arr);
         })
         .catch(err => {
-          console.log("没有获取到表格数据");
+          console.log("没有获取到所有文章");
         });
     },
 
@@ -124,13 +140,7 @@ export default {
     this.getData();
   },
   watch: {
-    input(val) {
-      //每次搜索的时候要将展示页重新归为一
-      this.currentPage = 1;
-      this.arr = this.list.filter(item => {
-        return JSON.stringify(item).includes(val);
-      });
-    }
+    
   },
   computed: {}
 };
