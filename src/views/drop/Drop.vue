@@ -1,34 +1,25 @@
 <template>
- <div>
-
- </div>
+  <div></div>
 </template>
 
 <script>
- export default {
-   data () {
-     return {
-
-     }
-   },
-   components: {
-
-   },
-   methods: {
-
-   },
-   mounted() {
-
-   },
-   watch: {
-
-   },
-   computed: {
-
-   }
- }
+export default {
+  data() {
+    return {
+      name:''
+    };
+  },
+  components: {},
+  methods: {
+    drop() {
+      localStorage.name = this.name = "";
+    }
+  },
+  mounted() {},
+  watch: {},
+  computed: {}
+};
 </script>
 
 <style scoped lang='scss'>
-
 </style>

@@ -6,7 +6,7 @@
         <span>欢迎:{{this.name}},来到小爱后台管理系统</span>
       </div>
       <div class="top_t">
-        <span>早上好，亲爱的{{this.name}}用户</span>
+        <span>{{this.Ntime}}，亲爱的{{this.name}}用户。</span>
         <span>登录时间：{{time}}</span>
       </div>
     </div>
@@ -69,7 +69,8 @@ export default {
   data() {
     return {
       time: '',
-      name: 123
+      name: 123,
+      Ntime:''
     };
   },
   components: {},
@@ -109,7 +110,21 @@ export default {
     },
     //获取时间
     times() {
+
+      let hour = this.$dayjs().day();
       this.time = this.$dayjs().format('YYYY年MM月DD日 HH时mm分ss秒')
+      if(hour>6 || hour <12){
+        return this.Ntime = '早上好'
+      }else if(hour>12 || hour <14){
+        return this.Ntime = '中午好'
+      }else if(hour>14 || hour <18){
+        return this.Ntime = '下午好'
+      }else if(hour>18 || hour <24){
+        return this.Ntime = '晚上好'
+      }else{
+        return this.Ntime = '太晚了该睡觉了'
+      }
+       
     }
   },
   mounted() {

@@ -11,7 +11,7 @@
         <el-table-column prop="PRESENT_PRICE" label="现价" width="150" align="center"></el-table-column>
         <el-table-column label="操作" align="center">
           <el-button icon="el-icon-edit" size="mini" type="primary" @click="modification()">修改</el-button>
-          <el-button icon="el-icon-delete" size="mini" type="danger" @click="dele(ID)">删除</el-button>
+          <el-button icon="el-icon-delete" size="mini" type="danger" @click="dele(arr.ID)">删除</el-button>
         </el-table-column>
       </el-table>
     </div>
@@ -89,11 +89,11 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(() => {
-          this.arr = this.arr.filter(ID => {
-            return ID !== val;
+          this.arr = this.arr.filter(item => {
+            return item.ID !== val;
           });
-          this.list = this.list.filter(ID => {
-            return ID !== val;
+          this.list = this.list.filter(item => {
+            return item.ID !== val;
           });
           this.$message({type: "success", message: "删除成功!"});
         }).catch(() => {
