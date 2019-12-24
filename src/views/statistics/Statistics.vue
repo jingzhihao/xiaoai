@@ -109,7 +109,7 @@ export default {
 
           //赋值
           //或许 类型 的 饼图数据
-          let categoryArr = this._.groupBy(res.data, item => {
+          let categoryArr = this.$lodash.groupBy(res.data, item => {
             return item.category;
           });
           //计数
@@ -120,7 +120,7 @@ export default {
             });
           }
           //或许 来源型 的 饼图数据
-          let sourceArr = this._.groupBy(res.data, item => {
+          let sourceArr = this.$lodash.groupBy(res.data, item => {
             return item.source;
           });
           for (let i in sourceArr) {
@@ -130,7 +130,7 @@ export default {
             });
           }
           //获取 瀑布图数据
-          let addArr = this._.groupBy(res.data, item => {
+          let addArr = this.$lodash.groupBy(res.data, item => {
             // console.log(item);
             return item.date.substring(0, 11);
           });
