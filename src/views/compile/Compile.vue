@@ -9,7 +9,7 @@
     <div class="content">
       <el-form
         :model="ruleForm"
-        :rules="rules"
+        
         ref="ruleForm"
         label-width="100px"
         class="demo-ruleForm"
@@ -117,7 +117,7 @@ export default {
           console.log(this.ruleForm);
           this.$axios
             .req("/article/update", {
-              _id: this.ruleForm.id,
+              id: this.ruleForm._id,
               title: this.ruleForm.title,
               abstract: this.ruleForm.abstract,
               author: this.ruleForm.author,
@@ -128,11 +128,12 @@ export default {
               date: this.ruleForm.date
             })
             .then(res => {
-              console.log("res=>", res);
-              if (res.code === 200) {
+              //console.log("res=>", res);
+              if (res.success === true) {
                 console.log("scusse");
-                alert("创建成功");
+                alert("修改成功");
               } else {
+                alert("修改失败");
                 console.log("失败");
               }
             });
@@ -150,7 +151,8 @@ export default {
         .then(res => {
           if (res.code === 200) {
             this.ruleForm = res.data;
-            console.log(res.ruleForm);
+            //this.ruleForm = this.arr
+            console.log(this.ruleForm);
           } else {
             alert("请求失败");
           }

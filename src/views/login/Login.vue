@@ -19,7 +19,7 @@
         </el-form-item>
 
         <el-form-item label="请输入验证码" prop="checkPass">
-          <el-input type="captcha" v-model="ruleForm.captcha" autocomplete="oft"></el-input>
+          <el-input type="captcha" v-model="ruleForm.checkPass" autocomplete="oft"></el-input>
         </el-form-item>
         <div class="img">
           <img src="api/captcha" @click="getData()" ref="captcha"/>
@@ -79,6 +79,7 @@ export default {
     },
     //判断登录是否成功
     submitForm(formName) {
+      console.log(this.ruleForm);
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.$message({

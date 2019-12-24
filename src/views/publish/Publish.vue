@@ -145,7 +145,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          console.log(this.ruleForm);
+          //console.log(this.ruleForm);
           this.$axios
             .req("/article/create", {
               title: this.ruleForm.title,
