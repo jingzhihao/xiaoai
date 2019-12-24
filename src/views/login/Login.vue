@@ -22,7 +22,7 @@
           <el-input type="captcha" v-model="ruleForm.checkPass" autocomplete="oft"></el-input>
         </el-form-item>
         <div class="img" @click="getData()">
-          <img src="api/captcha" ref="captcha"/>点击切换
+          <img src="api/captcha" ref="captcha" />点击切换
         </div>
         <el-form-item>
           <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
@@ -82,13 +82,23 @@ export default {
       console.log(this.ruleForm);
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.$message({
-            message: "成功登陆",
-            type: "success"
-          });
-          // 保存登录人的信息
-          localStorage.setItem("name", this.ruleForm.age);
-          this.$router.push("/common");
+          this.$axios
+            .req("", {
+              username: this.ruleForm.age,
+              passwrod: this.ruleForm.pass,
+              coed: this.ruleForm.checkPass
+            })
+            .then(res => {
+              if (res.message === "登录成功") {
+                this.$message({
+                  message: "成功登陆",
+                  type: "success"
+                });
+                // 保存登录人的信息
+                localStorage.setItem("name", this.ruleForm.age);
+                this.$router.push("/common");
+              }
+            });
         } else {
           console.log("error submit!!");
           return false;
@@ -100,8 +110,8 @@ export default {
       this.$refs[formName].resetFields();
     },
     //跳转注册页面
-    register(){
-      this.$router.push('/register')
+    register() {
+      this.$router.push("/register");
     }
   },
   mounted() {},
