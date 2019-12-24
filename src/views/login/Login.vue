@@ -18,11 +18,11 @@
           <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
         </el-form-item>
 
-        <el-form-item label="请输入验证码" prop="checkPass">
+        <el-form-item label="验证码" prop="checkPass">
           <el-input type="captcha" v-model="ruleForm.checkPass" autocomplete="oft"></el-input>
         </el-form-item>
-        <div class="img">
-          <img src="api/captcha" @click="getData()" ref="captcha"/>
+        <div class="img" @click="getData()">
+          <img src="api/captcha" ref="captcha"/>点击切换
         </div>
         <el-form-item>
           <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
