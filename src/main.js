@@ -27,28 +27,3 @@ new Vue({
     store,
     render: h => h(App)
 }).$mount('#app')
-
-//配置路由守卫
-router.beforeEach((to, from, next) => {
-    if (to.meta.requireAuth) {
-        if (JSON.parse(localStorage.getItem("name"))) {
-            next();
-        } else {
-            next({
-                path: "/login" //指向为你的登录界面
-            });
-        }
-    } else {
-        next();
-    }
-
-    if (to.fullPath === "/login") {
-        if (JSON.parse(localStorage.getItem("login"))) {
-            next({
-                path: from.fullPath
-            });
-        } else {
-            next();
-        }
-    }
-});

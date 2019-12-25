@@ -6,19 +6,16 @@ Vue.use(VueRouter)
 const routes = [{
         path: '/home',
         redirect: '/',
-        // 路由守卫
-        meta: { requireAuth: true },
+
     },
     {
         path: '/',
         component: Common,
-        // 路由守卫
-        meta: { requireAuth: true },
+
         children: [{
                 path: '',
                 name: 'home',
-                // 路由守卫
-                meta: { requireAuth: true },
+
                 component: () =>
                     import ('../views/Home.vue')
             },
@@ -27,8 +24,7 @@ const routes = [{
             {
                 path: '/published',
                 name: 'published',
-                // 路由守卫
-                meta: { requireAuth: true },
+
                 component: () =>
                     import ('../views/published/Published.vue')
             },
@@ -36,8 +32,7 @@ const routes = [{
             {
                 path: '/statistics',
                 name: 'statistics',
-                // 路由守卫
-                meta: { requireAuth: true },
+
                 component: () =>
                     import ('../views/statistics/Statistics.vue')
             },
@@ -45,8 +40,7 @@ const routes = [{
             {
                 path: '/publish',
                 name: 'publish',
-                // 路由守卫
-                meta: { requireAuth: true },
+
                 component: () =>
                     import ('../views/publish/Publish.vue')
             },
@@ -54,8 +48,7 @@ const routes = [{
             {
                 path: '/label',
                 name: 'label',
-                // 路由守卫
-                meta: { requireAuth: true },
+
                 component: () =>
                     import ('../views/label/Label.vue')
             },
@@ -63,8 +56,7 @@ const routes = [{
             {
                 path: '/educe',
                 name: 'educe',
-                // 路由守卫
-                meta: { requireAuth: true },
+
                 component: () =>
                     import ('../views/educe/Educe.vue')
             },
@@ -72,8 +64,7 @@ const routes = [{
             {
                 path: '/uploadon',
                 name: 'uploadon',
-                // 路由守卫
-                meta: { requireAuth: true },
+
                 component: () =>
                     import ('../views/uploadon/Uploadon.vue')
             },
@@ -81,8 +72,7 @@ const routes = [{
             {
                 path: '/drop',
                 name: 'drop',
-                // 路由守卫
-                meta: { requireAuth: true },
+
                 component: () =>
                     import ('../views/drop/Drop.vue')
             },
@@ -90,8 +80,7 @@ const routes = [{
             {
                 path: '/compile',
                 name: 'compile',
-                // 路由守卫
-                meta: { requireAuth: true },
+
                 component: () =>
                     import ('../views/compile/Compile.vue')
             },
@@ -111,8 +100,7 @@ const routes = [{
     {
         path: '/login',
         name: 'login',
-        // 路由守卫
-        meta: { requireAuth: true },
+
         component: () =>
             import ('../views/login/Login.vue')
     },
@@ -120,8 +108,7 @@ const routes = [{
     {
         path: '/register',
         name: 'register',
-        // 路由守卫
-        meta: { requireAuth: true },
+
         component: () =>
             import ('../views/login/Register.vue')
     },
@@ -139,5 +126,31 @@ const router = new VueRouter({
     base: process.env.BASE_URL,
     routes
 })
+
+
+
+// 进入路由之前
+// 参数是一个回调函数 回调里面又传3个参数
+// to:要进入的路由 from:从哪进入的路由 next是一个函数 所以必须调用 代表进入到下一个路由
+// 如果不写next 程序就被阻塞了
+
+
+// 第一是浏览器标题会随页面变化
+// 如果用户登录成功 我们会把用户信息存在localStorage和vuex里面
+// 如果用户没有登录 只能访问登录或者注册页面
+router.beforeEach((to, from, next) => {
+    document.title = to.meta.title
+        // 下面的name就是存在本地的用户名 要修改
+    let user = localStorage.getItem('name')
+    if (to.path === '/login' || to.path === '/register') {
+        next()
+    } else {
+        user ? next() : next('/login')
+    }
+    // console.log(to)
+    // console.log(from)
+})
+
+
 
 export default router
