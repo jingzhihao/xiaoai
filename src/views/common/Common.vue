@@ -69,7 +69,7 @@ export default {
   data() {
     return {
       time: '',
-      name: 123,
+      name: '',
       Ntime:''
     };
   },
@@ -132,9 +132,9 @@ export default {
 
     this.times()
     //宝登录人的信息赋值到页面
-    // if (localStorage.name) {
-    //   this.name = localStorage.getItem("name");
-    // }
+     if (localStorage.name) {
+       this.name = localStorage.getItem("name");
+     }
   },
   watch: {},
   computed: {}

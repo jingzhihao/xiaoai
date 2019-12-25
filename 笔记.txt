@@ -1,0 +1,372 @@
+vue
+  - 简介
+    - vue.js 是前端的**主流框架之一**，和Angular.js、React.js 一起，并成为前端三大主流框架
+    - vue.js 是一套构建用户界面的框架，只关注视图层，
+      它不仅易于上手，还便于与第三方库或既有项目整合。（vue有配套的第三方类库，可以整合起来做大型项目的开发)
+    - 是一套用于构建用户界面的渐进式框架。
+      与其它大型框架不同的是，vue 被设计为可以自底向上逐层应用。
+      vue 的核心库只关注视图层，不仅易于上手，还便于与第三方库或既有项目整合。
+      另一方面，当与现代化的工具链以及各种支持类库结合使用时，vue 也完全能够为复杂的单页应用提供驱动
+    - vue周边生态(基于vue语法)：
+      - weex: 跨平台解决方案(安卓和ios)，阿里出品
+      - chameleon: 跨平台解决方案(多端)，滴滴出品
+      - uni-app: 跨平台解决方案(多端)，dcloud出品
+      - mpvue: 小程序解决方案，美团出品
+      - megalo: 小程序解决方案，网易出品
+      - nuxt: vue服务端渲染框架
+
+  - 框架与库的区别
+    - 库: 解决单一问题，如果想更换库，可以随时换
+    - 框架: 一整套解决方案，项目如果需要更换框架，则需要重新架构整个项目
+      vue框架:vue.js + vuex + vue-router + axios + webpack + babel + ui框架
+
+  - MVC与MVVM
+    - vue是一款MVVM框架
+    - MVC
+      - 后端分层开发概念
+        - M:model 数据层 处理数据
+        - V:view  视图层 显示页面
+        - C:controler 控制器 业务逻辑
+    - MVVM
+      - 前端分层开发概念
+        - M:model 数据层 处理数据
+        - V:view  视图层 显示页面
+        - VM: viewmodel 视图数据层
+        - 中心思想: 数据驱动视图
+
+  - vue实例
+    - 创建一个vue实例
+      - 先安装vue
+      - 引入vue.js文件
+      - vue.js最后会返回一个Vue的构造函数，所以通过new的方式创建一个vue的实例
+      <div id='app'>
+        {{name}}
+      </div>
+      let vm = new Vue({
+        el: '#app', // 将我们的vue实例挂载在页面上的哪个节点
+        data () { // 所有需要的数据
+          return {
+            name: 'jack',
+            age: 18,
+            student: {
+              name: 'tom',
+              age: 18
+            }
+          }
+        },
+        methods: {} // 实例中所有的方法
+        如果想在方法中调用data中的数据，直接用this.数据属性名即可
+        如果想在方法中调用methods中的其他方法，直接用this.方法名即可
+        this代表我们当前的vue实例
+      })
+      - data可以是一个对象，也可以是一个带返回值的函数，我们必须写成函数形式
+        Object是引用数据类型，如果不是function返回，
+        每个数组的data都是内存的同一个地址，一个组件中的数据改变了，其他组件中的数据也会发生改变
+        data是一个函数的时，每个组件实例都有自己的作用域，每个实例相互独立，不会相互影响
+      - 数据用两个大括号包起来，写在渲染的区域内
+      - 数据渲染又称插值表达式
+
+    - 插值表达式
+      - 可以做运算
+        - {{name + 1}}
+        - {{name + '你好'}}
+        - {{name.substr(0, 2)}}
+        - {{age > 18 ? '成年' : '未成年'}}
+        - 如果data是一个数据 要留一个空格
+          - {{ student }}
+
+    - 指令
+      - 指令 (Directives) 是带有 v- 前缀的特殊特性
+
+      - v-cloak
+        解决网速慢时，数据显示闪烁问题
+        <p v-cloak>{{msg}}</p>
+        [v-cloak] {
+          display: none;
+        }
+
+      - v-text
+        显示数据，类似插值表达式
+        - 没有闪烁问题
+        - 标签里的内容不会显示
+
+      - v-html
+        渲染html代码
+        - 标签里的内容不会显示
+
+      - v-bind
+        绑定属性，可以简写成:
+        一旦使用了v-bind指令，后面就不是一个普通的字符串，而是会变成一个变量
+        其中也可以做一些运算，可以写js合法的表达式
+
+      - v-on
+        给元素绑定事件，可以简写为@
+        绑定的事件写在实例的methods中，名字一一对应即可
+        用法: @'绑定的事件' = '方法名'
+        可以传参数
+        如果不传参数，可以不写(),传入参数,参数写在小括号内 @click='clickItem(item)'
+        js常用的事件都可以绑定
+
+    - v-once
+        让数据只渲染一次，以后改变，对该数据无效
+
+    - 事件修饰符
+      - .stop 阻止冒泡事件
+      - .prevent 阻止默认事件
+      - .capture 添加事件侦听器时使用事件捕获模式(从外层向里层触发事件)
+      - .self 只当事件在该元素(比如不是子元素)触发时触发回调
+      - .once 事件只触发一次
+      事件修饰符可以一起使用,顺序不影响
+       @click.stop.prevent
+
+    - v-model
+      - 实现双向数据绑定，一般用于表单元素
+      - 普通文本
+      - 文本输入框
+      - 多选框(data中数据为数组)
+      - 单选框
+      - 下拉框(data中数据为数组)
+      - v-model修饰符
+        - .number 将输入框中的字符转换为数字
+        - .trim   如果要自动过滤用户输入的首尾空白字符
+        - .lazy   鼠标失去焦点后，绑定的数据再改吧
+
+    - 动态绑定样式
+      - 动态绑定class
+        - 直接用v-bind绑定 :class = ''
+        - 数组形式(类名必须用''包起来)
+          <div :class="['red', 'thin']">这是一段文字</div>
+        - 数组中使用三元表达式
+          <div :class="['red', 'thin', isactive?'active':'']">这是一段文字</div>
+        - 数组中嵌套对象
+          <div :class="['red', 'thin', {'active': isactive}]">这是一段文字</div>
+        - 直接使用对象
+          <div :class="{red:true, italic:true, active:true, thin:true}">这是一段文字</div>
+          后面跟上判断条件，为true时添加类名，为false则不添加
+
+      - 动态绑定style
+        - 直接用v-bind绑定 :style = ''
+          <div :style="{color: 'red', 'font-size': '40px'}">这是一个文本</div>
+        - 将样式对象，定义到 data 中，并直接引用到 :style 中
+          data: {
+             styleObj: { color: 'red', 'font-size': '40px', 'font-weight': '200' }
+          }
+          如果绑定多个，则写在一个数组中
+          <div :style='[styleObj1, styleObj2]'>这是一个文本</div>
+          绑定样式名时，如果写成驼峰命名，则不需要引号，如果是复杂命令，则需要加引号
+
+      - 列表循环 v-for
+        - 循环数组
+        - 循环对象
+        - 循环数字(数字是从1开始)
+        - 循环时，必须绑定key属性，而且key的值必须是唯一标识，不能用index当做key，只能是数字或者字符串类型
+
+      - 条件渲染
+        - v-if
+          - 每次都会重新渲染或者销毁元素
+          - 可以和v-else-if,v-else一起使用
+        - v-show
+          - 改变元素的display属性，并不会重新渲染或者销毁元素
+
+        一般来说，v-if 有更高的切换消耗而 v-show 有更高的初始渲染消耗
+        因此，如果需要频繁切换 v-show 较好，如果在运行时条件不大可能改变 v-if 较好
+
+      - 补充:
+        数组方法:
+          - every: 匹配每一个，如果每一个都符合条件，返回true，否则返回false
+            item:数组每一项
+            index:数组下标
+            arr:数组本身
+            let arr = [55, 77, 88, 99, 100]
+              let flag = arr.every((item, index, arr) => {
+                console.log(item)
+                console.log(index)
+                console.log(arr)
+                return item > 50
+              })
+              console.log(flag)
+
+          - some: 匹配每一个，如果有一个都符合条件，返回true，如果都不符合条件,返回false
+              item:数组每一项
+              index:数组下标
+              arr:数组本身
+              let arr = [1, 2, 3, 4, 5]
+                let flag = arr.some((item, index, arr) => {
+                  console.log(item)
+                  console.log(index)
+                  console.log(arr)
+                  return item > 5
+                })
+                console.log(flag)
+
+      - 绑定键盘事件
+        <div @keyup.enter='enter'>这是一个文本</div>
+        给元素绑定keyup事件,后面跟按键名字
+        .enter 回车
+        .tab   tab键
+        .space 空格
+        .up    上
+        .down  下
+        .left  左
+        .right 右
+
+      - 过滤器
+        - 全局过滤器
+          - 定义在全局
+            Vue.filter('过滤器名称', function(data){})
+            过滤器中的参数，规定死的，是要过滤的数据
+            用法: {{  要过滤的数据 | 过滤器名称}}
+            回调可以传入其他参数，如果你想传入其他参数，写在data后面，但是data必须是第一个参数
+        - 组件内部过滤器
+          - 定义在组件内部
+            写在filters里
+            用法: 和全局过滤器一样
+
+      - 自定义指令
+        - 全局指令
+          第二个参数, 传入特定的钩子函数
+          Vue.directive('指令名称', {
+
+            参数el: 为绑定指定的原生js对象
+
+            binding：一个对象，包含以下属性：
+            name：指令名，不包括 v- 前缀。
+            value：指令的绑定值，例如：v-my-directive="1 + 1" 中，绑定值为 2。
+            oldValue：指令绑定的前一个值，仅在 update 和 componentUpdated 钩子中可用。无论值是否改变都可用。
+            expression：字符串形式的指令表达式。例如 v-my-directive="1 + 1" 中，表达式为 "1 + 1"。
+            arg：传给指令的参数，可选。例如 v-my-directive:foo 中，参数为 "foo"。
+            modifiers：一个包含修饰符的对象。例如：v-my-directive.foo.bar 中，
+            修饰符对象为 { foo: true, bar: true }
+
+
+            inserted(el): 被绑定元素插入父节点时调用 (仅保证父节点存在，但不一定已被插入文档中)
+            bind(el):只调用一次，指令第一次绑定到元素时调用。在这里可以进行一次性的初始化设置
+            update(el)所在组件的 VNode 更新时调用，但是可能发生在其子 VNode 更新之前。指令的值可能发生了改变，也可能没有
+          })
+          用法: 在需要指令的元素使用 v-自定义指令名
+        - 组件内部自定义指令
+          写在directives里面 用法和全局自定义一样
+
+      - vue实例的生命周期
+        - 什么是生命周期：从Vue实例创建、运行、到销毁期间，总是伴随着各种各样的事件，这些事件，统称为生命周期
+        - 生命周期钩子就是生命周期事件的别名而已；
+        - 生命周期钩子 = 生命周期函数 = 生命周期事件
+        - 主要的生命周期函数分类：
+
+        - 创建期间的生命周期函数：
+        - beforeCreate：实例刚在内存中被创建出来，此时，还没有初始化好 data 和 methods 属性
+        - created：实例已经在内存中创建OK，此时 data 和 methods 已经创建OK，此时还没有开始 编译模板
+        - beforeMount：此时已经完成了模板的编译，但是还没有挂载到页面中
+        - mounted：此时，已经将编译好的模板，挂载到了页面指定的容器中显示
+
+        - 运行期间的生命周期函数：
+        - beforeUpdate：状态更新之前执行此函数， 此时 data 中的状态值是最新的，但是界面上显示的 数据还是旧的，因为此时还没有开始重新渲染DOM节点
+        - updated：实例更新完毕之后调用此函数，此时 data 中的状态值 和 界面上显示的数据，都已经完成了更新，界面已经被重新渲染好了！
+
+        - 销毁期间的生命周期函数：
+        - beforeDestroy：实例销毁之前调用。在这一步，实例仍然完全可用。
+        - destroyed：Vue 实例销毁后调用。调用后，Vue 实例指示的所有东西都会解绑定，所有的事件监听器会被移除，所有的子实例也会被销毁
+
+      - watch
+        - 监听一个数据的改变，如果数据改变了，则做对应的操作
+          - 监听普通变量
+            watch: {
+               name (val, oldVal) {
+                   console.log(val)
+                   console.log(oldVal)
+                },
+                也可以写成
+                'name' (val, oldVal) {
+                   console.log(val)
+                   console.log(oldVal)
+                }
+            }
+            val: 改变后的值
+            oldVal: 改变之前的值
+            大括号里面可以做任意操作
+            可以不传参数，表示一旦值发生变化，就做操作
+
+          - 监听对象的变化
+            'obj.name': {
+                    handler (val, oldVal) {
+                      console.log(val)
+                      console.log(oldVal)
+                    },
+                    deep: true, // 深度监听
+                    immediate: true
+                  }
+            deep: 深度监听，监听对象必须写上
+            immediate表示在watch中首次绑定的时候，是否执行handler，
+            值为true则表示在watch中声明的时候，就立即执行handler方法，
+            值为false，则和一般使用watch一样，在数据发生变化的时候才执行handler
+
+      - computed
+        - 计算属性
+          表示一个值是通过计算之后得到的，默认只有get方法
+          必须写返回值
+          计算属性只能定义在computed中，不能重复定义在data中，否则会报错
+          严格意义上并不是一个方法,但是可以做一些操作
+          有缓存性
+
+          - 计算属性的 setter
+            计算属性默认只有 getter ，不过在需要时你也可以提供一个 setter
+            computed: {
+              fullName: {
+                // getter
+                get () {
+                  return this.firstName + ' ' + this.lastName
+                },
+                // setter
+                set (newValue) {
+                  var names = newValue.split(' ')
+                  this.firstName = names[0]
+                  this.lastName = names[names.length - 1]
+                }
+              }
+            }
+            计算属性的setter也可以实现双向数据绑定
+            计算属性可以通过this直接访问
+
+      - 动画
+        - 通过类名控制动画效果
+          - 进入组件: enter
+            v-enter:进入之前
+            v--enter-active:进入时
+            v-enter-to: 进入之后
+          - 离开组件: leave
+            v-leave:离开之前
+            v--leave-active:离开时
+            v-leave-to: 离开之后
+        - 要添加动画的元素 使用transition包裹起来
+          enter和leave是官方默认给的类名，也可以自定义类名，只需要把v-改成自定义名字-
+          如果自定义类名，transition必须加name属性，属性值为自定义的值
+        - 结合第三方的动画库实现动画效果(animate.css)
+          - 先给要添加动画的元素加上animated类
+            然后在transition加上类名
+            enter-active-class="动画名" leave-active-class="动画名"
+            使用  :duration="{ enter: 200, leave: 400 }"  来分别设置 入场的时长 和 离场的时长
+        - 使用js钩子函数实现动画
+          <transition
+            v-on:before-enter="beforeEnter"
+            v-on:enter="enter"
+            v-on:after-enter="afterEnter"
+            v-on:enter-cancelled="enterCancelled"
+
+            v-on:before-leave="beforeLeave"
+            v-on:leave="leave"
+            v-on:after-leave="afterLeave"
+            v-on:leave-cancelled="leaveCancelled"
+          >
+            <!-- ... -->
+          </transition>
+          每个函数都可以传入一个参数el，表示要执行动画的元素
+          在enter函数中，必须加上el.offsetWidth，强制刷新动画，动画效果才能生效
+          enter函数可以传入第二个参数 done，是一个函数，表示after-enter这个函数的引用
+
+        - 动画组
+          如果需要添加动画的元素是v-for循环出来的，需要用transition-group包裹
+          .v-move 和 .v-leave-active 配合使用，能够实现列表后续的元素，渐渐地漂上来的效果
+          appear属性，让列表有一个进场动画
+          tag='标签名' 把元素渲染成对应的标签 默认为span
+
+

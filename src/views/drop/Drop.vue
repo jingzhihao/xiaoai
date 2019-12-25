@@ -1,6 +1,9 @@
 <template>
   <div>
-    123
+    
+      <el-button @click="drop">退出登录</el-button>
+    
+    
   </div>
 </template>
 
@@ -8,13 +11,24 @@
 export default {
   data() {
     return {
-      name:''
+      name: ""
     };
   },
   components: {},
   methods: {
     drop() {
-      localStorage.name = this.name = "";
+      this.$axios
+        .req("/user/logout")
+        .then(res => {
+          if (res.code === 0) {
+            alert("退出成功");
+            localStorage.name = this.name = "";
+            this.$router.push("/login");
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
   mounted() {},

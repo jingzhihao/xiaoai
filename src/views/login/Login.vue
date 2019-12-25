@@ -82,13 +82,15 @@ export default {
       console.log(this.ruleForm);
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.$axios
-            .req("", {
-              username: this.ruleForm.age,
-              passwrod: this.ruleForm.pass,
-              coed: this.ruleForm.checkPass
+          
+           this.$axios
+            .req("/user/login", {
+              username:  this.ruleForm.age,
+              password: this.ruleForm.pass,
+              code: this.ruleForm.checkPass
             })
             .then(res => {
+              console.log(res);
               if (res.message === "登录成功") {
                 this.$message({
                   message: "成功登陆",
@@ -96,12 +98,11 @@ export default {
                 });
                 // 保存登录人的信息
                 localStorage.setItem("name", this.ruleForm.age);
-                this.$router.push("/common");
+                this.$router.push("/");
+              }else{
+                console.log('登录失败')
               }
             });
-        } else {
-          console.log("error submit!!");
-          return false;
         }
       });
     },

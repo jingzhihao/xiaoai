@@ -5,29 +5,27 @@
     </div>
     <div class="el-table">
       <el-table :data="arr.slice((currentPage-1)*pageSum,pageSum*currentPage)" style="width: 100%">
-        <el-table-column prop="NAME" label="名称" width="400" align="center"></el-table-column>
-        <el-table-column prop="GOODS_SERIAL_NUMBER" label="商品编号" width="280" align="center"></el-table-column>
+        <el-table-column prop="NAME" label="名称" width="500" align="center"></el-table-column>
+        <el-table-column prop="GOODS_SERIAL_NUMBER" label="商品编号" width="380" align="center"></el-table-column>
         <el-table-column prop="ORI_PRICE" label="原价" width="150" align="center"></el-table-column>
         <el-table-column prop="PRESENT_PRICE" label="现价" width="150" align="center"></el-table-column>
         <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-          <el-button type="text" @click="dialogFormVisible = true">修改</el-button>
+          <el-button type="primary" size="mini" icon="el-icon-delete" @click="dialogFormVisible = true">修改</el-button>
             <el-dialog title="修改内容" :visible.sync="dialogFormVisible">
               <el-form :model="form">
-                <el-form-item label="活动名称" :label-width="formLabelWidth">
+                <el-form-item label="活动名称">
                   <el-input v-model="form.name" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="活动区域" :label-width="formLabelWidth">
-                  <el-select v-model="form.region" placeholder="请选择活动区域">
-                    <el-option label="区域一" value="shanghai"></el-option>
-                    <el-option label="区域二" value="beijing"></el-option>
-                  </el-select>
+                <el-form-item label="活动区域">
+                  <el-input v-model="form.name" autocomplete="off"></el-input>
                 </el-form-item>
               </el-form>
               <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
                 <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
               </div>
+              </el-dialog>
             <!-- <el-button icon="el-icon-edit" size="mini" type="primary" @click="modification()">修改</el-button> -->
             <el-button
               icon="el-icon-delete"
@@ -83,7 +81,9 @@ export default {
         原价: "ORI_PRICE",
         现价: "PRESENT_PRICE"
       },
-      dialogFormVisible: false,
+       dialogTableVisible: false,
+        dialogFormVisible: false,
+     
       form: {
           name: '',
           region: '',
