@@ -4,7 +4,7 @@
       <el-input placeholder="请输入商品名称" v-model="input" clearable></el-input>
     </div>
     <div class="el-table">
-      <el-table :data="arr.slice((currentPage-1)*pageSum,pageSum*currentPage)" style="width: 100%">
+      <el-table :data="arr.slice((currentPage-1)*pageSum,pageSum*currentPage)"  style="width: 100%">
         <el-table-column prop="NAME" label="名称" width="500" align="center"></el-table-column>
         <el-table-column prop="GOODS_SERIAL_NUMBER" label="商品编号" width="380" align="center"></el-table-column>
         <el-table-column prop="ORI_PRICE" label="原价" width="150" align="center"></el-table-column>
@@ -13,12 +13,12 @@
         <template slot-scope="scope">
           <el-button type="primary" size="mini" icon="el-icon-delete" @click="dialogFormVisible = true">修改</el-button>
             <el-dialog title="修改内容" :visible.sync="dialogFormVisible">
-              <el-form :model="form">
-                <el-form-item label="活动名称">
-                  <el-input v-model="form.name" autocomplete="off"></el-input>
+              <el-form>
+                <el-form-item label="原价" prop="ORI_PRICE">
+                  <el-input v-model="scope.row.ORI_PRICE" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="活动区域">
-                  <el-input v-model="form.name" autocomplete="off"></el-input>
+                <el-form-item label="现价" prop="PRESENT_PRICE">
+                  <el-input v-model="scope.row.PRESENT_PRICE" autocomplete="off"></el-input>
                 </el-form-item>
               </el-form>
               <div slot="footer" class="dialog-footer">
@@ -83,17 +83,6 @@ export default {
       },
        dialogTableVisible: false,
         dialogFormVisible: false,
-     
-      form: {
-          name: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
-        },
     };
   },
   components: {},

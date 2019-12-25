@@ -258,31 +258,31 @@ export default {
   justify-content: space-around;
   align-items: center;
   .card {
-    width: 380px;
+    width: 472px;
     height: 366px;
   }
 }
 
 //订单
 .indent {
-  height: 480px;
+  height: 580px;
   display: flex;
   justify-content: space-around;
   align-items: center;
   .indent_card {
-    width: 580px;
-    height: 450px;
+    width: 614px;
+    height: 500px;
   }
   .indent_rd {
-    width: 320px;
-    height: 450px;
+    width: 412px;
+    height: 500px;
   }
   .indent_cd {
-    width: 260px;
-    height: 450px;
+    width: 320px;
+    height: 500px;
     img {
-      width: 249px;
-      height: 190px;
+      width: 306px;
+      height: 240px;
       margin: 0 0 0 -14px;
     }
   }

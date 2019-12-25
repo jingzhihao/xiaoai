@@ -98,6 +98,7 @@ export default {
                 });
                 // 保存登录人的信息
                 localStorage.setItem("name", this.ruleForm.age);
+                
                 this.$router.push("/");
               }else{
                 console.log('登录失败')

@@ -5,14 +5,20 @@ Vue.use(VueRouter)
 
 const routes = [{
         path: '/home',
-        redirect: '/'
+        redirect: '/',
+        // 路由守卫
+        meta: { requireAuth: true },
     },
     {
         path: '/',
         component: Common,
+        // 路由守卫
+        meta: { requireAuth: true },
         children: [{
                 path: '',
                 name: 'home',
+                // 路由守卫
+                meta: { requireAuth: true },
                 component: () =>
                     import ('../views/Home.vue')
             },
@@ -21,6 +27,8 @@ const routes = [{
             {
                 path: '/published',
                 name: 'published',
+                // 路由守卫
+                meta: { requireAuth: true },
                 component: () =>
                     import ('../views/published/Published.vue')
             },
@@ -28,6 +36,8 @@ const routes = [{
             {
                 path: '/statistics',
                 name: 'statistics',
+                // 路由守卫
+                meta: { requireAuth: true },
                 component: () =>
                     import ('../views/statistics/Statistics.vue')
             },
@@ -35,6 +45,8 @@ const routes = [{
             {
                 path: '/publish',
                 name: 'publish',
+                // 路由守卫
+                meta: { requireAuth: true },
                 component: () =>
                     import ('../views/publish/Publish.vue')
             },
@@ -42,6 +54,8 @@ const routes = [{
             {
                 path: '/label',
                 name: 'label',
+                // 路由守卫
+                meta: { requireAuth: true },
                 component: () =>
                     import ('../views/label/Label.vue')
             },
@@ -49,6 +63,8 @@ const routes = [{
             {
                 path: '/educe',
                 name: 'educe',
+                // 路由守卫
+                meta: { requireAuth: true },
                 component: () =>
                     import ('../views/educe/Educe.vue')
             },
@@ -56,6 +72,8 @@ const routes = [{
             {
                 path: '/uploadon',
                 name: 'uploadon',
+                // 路由守卫
+                meta: { requireAuth: true },
                 component: () =>
                     import ('../views/uploadon/Uploadon.vue')
             },
@@ -63,6 +81,8 @@ const routes = [{
             {
                 path: '/drop',
                 name: 'drop',
+                // 路由守卫
+                meta: { requireAuth: true },
                 component: () =>
                     import ('../views/drop/Drop.vue')
             },
@@ -70,6 +90,8 @@ const routes = [{
             {
                 path: '/compile',
                 name: 'compile',
+                // 路由守卫
+                meta: { requireAuth: true },
                 component: () =>
                     import ('../views/compile/Compile.vue')
             },
@@ -77,6 +99,8 @@ const routes = [{
             {
                 path: '/check',
                 name: 'check',
+                // 路由守卫
+                meta: { requireAuth: true },
                 component: () =>
                     import ('../views/check/Check.vue')
             },
@@ -87,6 +111,8 @@ const routes = [{
     {
         path: '/login',
         name: 'login',
+        // 路由守卫
+        meta: { requireAuth: true },
         component: () =>
             import ('../views/login/Login.vue')
     },
@@ -94,6 +120,8 @@ const routes = [{
     {
         path: '/register',
         name: 'register',
+        // 路由守卫
+        meta: { requireAuth: true },
         component: () =>
             import ('../views/login/Register.vue')
     },
