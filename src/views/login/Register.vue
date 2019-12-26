@@ -34,9 +34,10 @@
 export default {
   data() {
     var checkAge = (rule, value, callback) => {
+      let qq = new RegExp(/[\u4E00-\u9FA5]/g)
       if (!value) {
         return callback(new Error("用户名不能为空"));
-      } else if (value === /[\u4E00-\u9FA5]/g) {
+      } else if (value.match(qq)) {
         return callback(new Error("用户名不能为中文"));
       } else {
         callback();
