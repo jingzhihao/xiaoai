@@ -8,19 +8,42 @@
       </div>
       <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
     </el-upload>
+     <div class="title">vue-image-crop-upload上传</div>
+    <div>
+      <div>
+        <el-button class="btn" @click="toggleShow">点击上传</el-button>
+      </div>
+      <my-upload
+        field="file"
+        @crop-success="cropSuccess"
+        @crop-upload-success="cropUploadSuccess"
+        @crop-upload-fail="cropUploadFail"
+        v-model="show"
+        :width="300"
+        :height="300"
+        url="/api/upload"
+        img-format="png"
+      ></my-upload>
+      <img v-if="imgDataUrl" :src="imgDataUrl" />
+    </div>
   </div>
 </template>
 
 <script>
+import myUpload from "vue-image-crop-upload";
 export default {
   data() {
     return {
-      fileList: []
+      fileList: [],
+      imgDataUrl: "",
+      show: false,
     };
   },
-  components: {},
+  components: {"my-upload": myUpload},
   methods: {
-
+toggleShow() {
+      this.show = !this.show;
+    },
   },
   mounted() {},
   watch: {},

@@ -24,6 +24,7 @@
 
         <el-form-item>
           <el-button @click="submitForm('ruleForm')">注册</el-button>
+          <el-button @click="submit">登录</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -34,7 +35,7 @@
 export default {
   data() {
     var checkAge = (rule, value, callback) => {
-      let qq = new RegExp(/[\u4E00-\u9FA5]/g)
+      let qq = new RegExp(/[\u4E00-\u9FA5]/g);
       if (!value) {
         return callback(new Error("用户名不能为空"));
       } else if (value.match(qq)) {
@@ -77,8 +78,15 @@ export default {
   },
   components: {},
   methods: {
-    //切换验证码
 
+    //
+    submit(){
+      this.$router.push('login')
+    },
+    //切换验证码
+    getData() {
+      this.$refs.captcha.src = "api/captcha?time=" + Date.now();
+    },
     //判断注册是否成功
     submitForm(formName) {
       this.$refs[formName].validate(valid => {

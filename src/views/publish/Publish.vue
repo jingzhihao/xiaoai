@@ -2,8 +2,8 @@
   <div>
     <div class="fot">
       <div class="fout">
-        <el-button size="small" type="danger">查看</el-button>
-        <el-button size="mini" type="primary">发布</el-button>
+        <el-button size="small" type="danger" @click="check()">查看</el-button>
+        <el-button size="mini" type="primary" @click="submitForm('ruleForm')">发布</el-button>
       </div>
     </div>
     <div class="content">
@@ -142,6 +142,11 @@ export default {
   },
   components: {},
   methods: {
+
+    check(val) {
+      this.$router.push({ name: "published"});
+    },
+
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {

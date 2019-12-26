@@ -2,18 +2,12 @@
   <div>
     <div class="fot">
       <div class="fout">
-        <el-button size="small" type="danger">返回</el-button>
+        <el-button size="small" type="danger" @click="add">返回</el-button>
         <el-button size="mini" type="primary" @click="submitForm('ruleForm')">发布</el-button>
       </div>
     </div>
     <div class="content">
-      <el-form
-        :model="ruleForm"
-        
-        ref="ruleForm"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
+      <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
         <el-form-item label="文章标题" prop="title">
           <el-input v-model="ruleForm.title"></el-input>
         </el-form-item>
@@ -109,7 +103,9 @@ export default {
   },
   components: {},
   methods: {
-
+    add() {
+      this.$router.push('published')
+    },
     //把修改之后的值传到数据库
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
@@ -163,7 +159,7 @@ export default {
     }
   },
   mounted() {
-      this.getData();
+    this.getData();
   },
   watch: {},
   computed: {}

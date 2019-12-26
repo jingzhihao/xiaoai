@@ -23,7 +23,7 @@
               </el-form>
               <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+                <el-button type="primary" @click="app()">确 定</el-button>
               </div>
             </el-dialog>
             <!-- <el-button icon="el-icon-edit" size="mini" type="primary" @click="modification()">修改</el-button> -->
@@ -61,6 +61,16 @@
         <el-button type="primary" size="small">导出EXCEL</el-button>
       </download-excel>
       <!-- <el-button size="mini" type="danger">导出csv</el-button> -->
+       <download-excel
+        class="export-excel-wrapper"
+        type="csv"
+        :data="arr"
+        :fields="json_fields"
+        name="filename.csv"
+      >
+        <!-- 上面可以自定义自己的样式，还可以引用其他组件button -->
+        <el-button type="primary" size="small">导出csv</el-button>
+      </download-excel>
     </div>
   </div>
 </template>
@@ -88,11 +98,28 @@ export default {
   },
   components: {},
   methods: {
+    app(){
+      console.log(this.form);
+        this.arr=this.arr.map(item=>{
+          if(item.GOODS_SERIAL_NUMBER===this.form.GOODS_SERIAL_NUMBER){
+            return this.form
+          }else{
+            return item
+          }
+          })
+           this.list=this.list.map(item=>{
+          if(item.GOODS_SERIAL_NUMBER===this.form.GOODS_SERIAL_NUMBER){
+            return this.form
+          }else{
+            return item
+          }
+          })
+           this.dialogFormVisible = false
+    },
     //修改
     add(val) {
-      console.log(val);
       this.dialogFormVisible = true
-      this.form = val;
+      this.form = JSON.parse(JSON.stringify(val));
     },
     //删除
     dele(val) {
@@ -103,7 +130,7 @@ export default {
       })
         .then(() => {
           this.arr.splice(val + (this.currentPage - 1) * this.pagesize, 1);
-
+          this.list.splice(val + (this.currentPage - 1) * this.pagesize, 1);
           this.$message({ type: "success", message: "删除成功!" });
         })
         .catch(() => {
@@ -134,13 +161,13 @@ export default {
     this.getData();
   },
   watch: {
-    input(val) {
-      //每次搜索的时候要将展示页重新归为一
-      this.currentPage = 1;
-      this.arr = this.list.filter(item => {
-        return JSON.stringify(item).includes(val);
-      });
-    }
+    // input(val) {
+    //   //每次搜索的时候要将展示页重新归为一
+    //   this.currentPage = 1;
+    //   this.arr = this.list.filter(item => {
+    //     return JSON.stringify(item).includes(val);
+    //   });
+    // }
   },
   computed: {}
 };
