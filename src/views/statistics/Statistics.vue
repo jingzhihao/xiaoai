@@ -108,7 +108,7 @@ export default {
           let chartData3 = [];
 
           //赋值
-          //或许 类型 的 饼图数据
+          //或取 类型 的 饼图数据
           let categoryArr = this.$lodash.groupBy(res.data, item => {
             return item.category;
           });
