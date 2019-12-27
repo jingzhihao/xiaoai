@@ -148,8 +148,8 @@ export default {
 
 <style scoped lang='scss'>
 #de {
-  width: 100%;
-  height: 100%;
+  width: 90%;
+  height: 90%;
   position: absolute;
   margin: 0 auto;
   background: url("../../assets/img/zhuche.png");

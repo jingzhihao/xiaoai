@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="de">
     <el-card class="box-card">
       <el-card class="sign">欢迎来到小爱社区</el-card>
       <el-form
@@ -123,6 +123,18 @@ export default {
 </script>
 
 <style scoped lang='scss'>
+#de {
+  width: 90%;
+  height: 90%;
+  position: absolute;
+  margin: 0 auto;
+  background: url("../../assets/img/zhuche.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -o-background-size: cover;
+  background-position: center 0;
+}
 .box-card {
   width: 500px;
   height: 500px;
